@@ -87,7 +87,7 @@ var run = function (cb) {
 var agent = function () {
   run(function () {
     console.log('Hibernating for 10 minutes...');
-    setTimeout(run, 1000*60*10);
+    setTimeout(agent, 1000*60*10);
   });
 };
 
