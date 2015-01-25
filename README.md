@@ -3,8 +3,10 @@
 This is an agent which will watch a list of http urls and email you when
 they change.
 
-The agent checks the list of URL's every 10 minutes. If a URL have
-changed since the last check it will send an email to all recipients.
+Every minute the agent checks a job list if any crawl are due to run. If
+due, the URL will be crawled and compared against the last known version
+of the content. If changed, the agent will send out emails to all who
+have subscribed.
 
 ## Disclamer
 
