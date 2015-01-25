@@ -1,6 +1,6 @@
-# website-watcher
+# http-url-watcher-agent
 
-This is an agent which will watch a list of websites and email you when
+This is an agent which will watch a list of http urls and email you when
 they change.
 
 The agent checks the list of URL's every 10 minutes. If a URL have

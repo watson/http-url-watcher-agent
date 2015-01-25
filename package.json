@@ -1,7 +1,7 @@
 {
-  "name": "website-watcher",
+  "name": "http-url-watcher-agent",
   "version": "0.0.1",
-  "description": "Watch any website",
+  "description": "Watch a list of http urls for changes",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
