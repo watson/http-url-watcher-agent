@@ -1,23 +1,32 @@
 'use strict';
 
 var opbeat = require('./lib/opbeat');
-var config = require('./lib/config');
+var jobModel = require('./lib/job');
 var check = require('./lib/check');
 var notify = require('./lib/notify');
 
 var run = function (cb) {
-  config(function (err, config) {
+  jobModel.loadDueJobs(function (err, jobs) {
     if (err) {
       opbeat.captureError(err);
       cb();
       return;
     }
+    if (!jobs.length) {
+      console.log('No due jobs found!');
+      cb();
+      return;
+    }
 
-    var callbacks = config.sites.length;
-    config.sites.forEach(function (site) {
-      check(site.url, site.query, function (err, result) {
-        if (err) opbeat.captureError(err, { extra: { url: site.url, query: site.query } });
-        if (result) notify(config, result);
+    var callbacks = jobs.length;
+    jobs.forEach(function (job) {
+      jobModel.queueJob(job, function (err) {
+        if (err) opbeat.captureError(err);
+      });
+
+      check(job.url, job.query, function (err, result) {
+        if (err) opbeat.captureError(err, { extra: { url: job.url, query: job.query } });
+        if (result) notify(job, result);
         if (!--callbacks) cb();
       });
     });
@@ -26,7 +35,6 @@ var run = function (cb) {
 
 (function agent () {
   run(function () {
-    console.log('Hibernating for 10 minutes...');
-    setTimeout(agent, 1000*60*10);
+    setTimeout(agent, 1000*60);
   });
 })();

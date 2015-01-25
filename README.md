@@ -12,34 +12,37 @@ This project is alpha and WIP and will most likely be split up into
 several reusable node modules. For now it's not on NPM and just one big
 pile of code.
 
-## Dependencies
+## Setup
 
-This project expects that you have the following set up:
+Set the following required environment variables:
 
-- A MongoDB database - configurable using environment variable `MONGO_URI`
-- A SendGrid account - configurable using the two environment variables `SENDGRID_USERNAME` and `SENDGRID_PASSWORD`
-- An Opbeat account - configurable using the three environment variables `OPBEAT_ORGANIZATION_ID`, `OPBEAT_APP_ID` and `OPBEAT_SECRET_TOKEN` (currently only logs if `NODE_ENV` is set to `production`)
+- `SENDGRID_USERNAME`
+- `SENDGRID_PASSWORD`
 
-## Configuration
+Set the following optional environment variables:
 
-Besides the environment variables mentioned above, you need to create a
-collection in the Mongo database called `config`. In that collection you
-should create a single document:
+- `MONGO_URI` - defaults to `localhost/http-url-watcher-agent`
+- `SENDGRID_FROM` - defaults to the recipients own email
+- `OPBEAT_ORGANIZATION_ID` - Opbeat will be disabled if not set
+- `OPBEAT_APP_ID` - Opbeat will be disabled if not set
+- `OPBEAT_SECRET_TOKEN` - Opbeat will be disabled if not set
 
-Example
+## Jobs
+
+To create a job, add a document to the `jobs` collection in MongoDB. The
+document should follow this schema:
 
 ```js
 {
-  sites: [
-    {
-      url: 'http://en.wikipedia.org/wiki/Web_crawler', // the full url to crawl
-      query: '#content'                                // a css query used to extract the main HTML content that should be diffed
-    }
-  ],
-  notify: [ 'bob@xample.com', 'alice@example.com' ],   // a list of report recipients
-  from: 'noreply@example.com'                          // the report from address
+  notify: [ 'bob@example.com', ... ], // an array of emails that should be notified upon changes
+  url: 'http://example.com',          // the full url to crawl
+  query: '#content',                  // (optional) a css query used to extract the main HTML content that should be diffed
+  interval: 10                        // (optional) number of minutes between each crawl (defaults to 60, minimum 10)
 }
 ```
+
+If the URL isn't for an HTML document, the query property shouldn't be
+specified.
 
 ## License
 
