@@ -15,9 +15,9 @@ var run = function (cb) {
 
     var callbacks = config.sites.length;
     config.sites.forEach(function (site) {
-      check(site.url, site.query, function (err, a, b) {
+      check(site.url, site.query, function (err, result) {
         if (err) opbeat.captureError(err, { extra: { url: site.url, query: site.query } });
-        if (a || b) notify(config, site.url, a, b);
+        if (result) notify(config, result);
         if (!--callbacks) cb();
       });
     });
