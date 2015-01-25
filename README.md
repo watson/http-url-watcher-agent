@@ -36,7 +36,7 @@ Example
       query: '#content'                                // a css query used to extract the main HTML content that should be diffed
     }
   ],
-  notify: [ 'bob@xample.com', 'alice@example.com ],    // a list of report recipients
+  notify: [ 'bob@xample.com', 'alice@example.com' ],   // a list of report recipients
   from: 'noreply@example.com'                          // the report from address
 }
 ```
