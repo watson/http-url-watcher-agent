@@ -26,7 +26,7 @@ var run = function (cb) {
 
       check(job.url, job.query, function (err, result) {
         if (err) opbeat.captureError(err, { extra: { url: job.url, query: job.query } });
-        if (result) notify(job, result);
+        if (result) notify(job.notify, result);
         if (!--callbacks) cb();
       });
     });
